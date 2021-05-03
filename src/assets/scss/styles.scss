@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC|Bree+Serif|Playfair+Display&display=swap');
+
+// fonts
+$font-primary: "Amatic SC", serif;
+$font-secondary: "Bree Serif", serif;
+$font-tertiary : "Playfair Display", serif;
+
+h1, 
+h2, 
+h3, 
+h4 {
+  font-family: $font-primary;
+}

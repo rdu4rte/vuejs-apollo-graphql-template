@@ -9,5 +9,28 @@ h1,
 h2, 
 h3, 
 h4 {
-  font-family: $font-primary;
+  font-family: $font-secondary;
+}
+
+// auth
+.auth-container {
+  margin-top: 40px;
+
+  h1 {
+    font-size: 2.5rem;
+    text-align: center;
+  }
+
+  .v-btn {
+    margin: 10px auto;
+  }
+}
+
+.auth-card {
+  width: 400px;
+  margin: 10px auto 60px;
+}
+
+.auth-form {
+  padding: 20px;
 }

@@ -1,7 +1,11 @@
 <template>
   <v-container class="auth-container">
     <h1><i class="fas fa-user-plus"></i> Sign Up</h1>
-    <v-card class="auth-card">
+    <v-alert v-if="validationErr" dense outlined type="error">
+      {{ this.validationErr }}
+    </v-alert>
+    <Spinner v-if="loading" />
+    <v-card v-else class="auth-card">
       <v-form class="auth-form" ref="form" v-model="valid" lazy-validation>
         <v-text-field v-model="username" :rules="usernameRules" label="Username" required></v-text-field>
         <v-text-field v-model="email" :rules="emailRules" label="Email" required></v-text-field>
@@ -35,17 +39,24 @@
   </v-container>
 </template>
 <script>
+import { SIGNUP } from '../graphql/auth.js'
+
 export default {
   name: 'Register',
+  components: {
+    Spinner: () => import('../../../components/loading/Spinner')
+  },
   data: () => ({
     username: '',
     email: '',
     password: '',
     passwordConfirm: '',
     // validation
+    validationErr: null,
     valid: true,
     show1: false,
     show2: false,
+    loading: false,
     usernameRules: [(v) => !!v || 'Username is required'],
     emailRules: [(v) => !!v || 'E-mail is required', (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid'],
     passwordRules: {
@@ -54,13 +65,26 @@ export default {
     }
   }),
   methods: {
-    signup() {
-      if (this.$refs.form.validate()) {
-        console.log(this.username, this.email, this.password, this.passwordConfirm)
-        this.$router.push('/signin')
-      }
-
-      return () => console.log('failed')
+    async signup() {
+      this.loading = true
+      if (this.$refs.form.validate())
+        await this.$apollo
+          .mutate({
+            mutation: SIGNUP,
+            variables: {
+              username: this.username,
+              email: this.email,
+              password: this.password,
+              password_confirm: this.passwordConfirm
+            }
+          })
+          .then(() => this.$router.push('/signin'))
+          .catch((err) => {
+            if (err.message.includes('E11000')) {
+              this.validationErr = 'User or email already in use'
+            }
+          })
+      this.loading = false
     }
   }
 }

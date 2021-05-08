@@ -1,7 +1,11 @@
 <template>
   <v-container class="auth-container">
     <h1><i class="fas fa-sign-in-alt"></i> Sign In</h1>
-    <v-card class="auth-card">
+    <v-alert v-if="validationErr" dense outlined type="error">
+      {{ this.validationErr }}
+    </v-alert>
+    <Spinner v-if="loading" />
+    <v-card v-else class="auth-card">
       <v-form class="auth-form" ref="form" v-model="valid" lazy-validation>
         <v-text-field v-model="username" :rules="usernameRules" label="Username" required></v-text-field>
         <v-text-field
@@ -25,12 +29,19 @@
   </v-container>
 </template>
 <script>
+import { LOGIN } from '../graphql/auth'
+
 export default {
   name: 'Login',
+  components: {
+    Spinner: () => import('../../../components/loading/Spinner')
+  },
   data: () => ({
     username: '',
     password: '',
     // validation
+    validationErr: null,
+    loading: false,
     valid: true,
     show1: false,
     usernameRules: [(v) => !!v || 'Username is required'],
@@ -39,12 +50,28 @@ export default {
     }
   }),
   methods: {
-    login() {
-      if (this.$refs.form.validate()) {
-        console.log(this.username, this.password)
-      }
-
-      console.log('failed')
+    async login() {
+      this.loading = true
+      if (this.$refs.form.validate())
+        await this.$apollo
+          .mutate({
+            mutation: LOGIN,
+            variables: {
+              username: this.username,
+              password: this.password
+            }
+          })
+          .then((res) => {
+            localStorage.setItem('token', res.data.login.token)
+            this.$router.push('/tasks')
+          })
+          .catch((err) => {
+            if (err.message.includes('found')) {
+              this.validatioErr = 'User not found'
+            }
+            this.validationErr = 'Wrong credentials'
+          })
+      this.loading = false
     }
   }
 }

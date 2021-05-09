@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const GET_TASKS = gql`
   query {
-    getAll {
+    todos {
       _id
       content
       createdAt
@@ -10,20 +10,9 @@ export const GET_TASKS = gql`
     }
   }
 `
-export const GET_DONE = gql`
-  query {
-    getByDone {
-      _id
-      content
-      done
-      createdAt
-    }
-  }
-`
-
 export const UPDATE_TASK = gql`
   mutation($content: String, $done: Boolean, $id: ObjectId!) {
-    updateOne(updateContent: { content: $content, done: $done }, id: $id) {
+    update(todo: { content: $content, done: $done }, id: $id) {
       _id
       content
       createdAt

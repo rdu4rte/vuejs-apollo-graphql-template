@@ -63,7 +63,7 @@ export default {
           })
           .then((res) => {
             localStorage.setItem('token', res.data.login.token)
-            this.$router.push('/tasks')
+            this.$router.push('/dashboard/tasks')
           })
           .catch((err) => {
             if (err.message.includes('found')) {

@@ -13,11 +13,11 @@
             </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/tasks">
+          <v-list-item to="/dashboard/tasks">
             <v-list-item-icon>
               <v-icon>mdi-card-text</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Tasks</v-list-item-title>
+            <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item>
           <v-list-item to="/signin">
             <v-list-item-icon>

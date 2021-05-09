@@ -1,4 +1,5 @@
 import { onError } from 'apollo-link-error'
+import router from '../router'
 
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -8,6 +9,9 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
           extensions.exception.code
         }`
       )
+      if (message.includes('Not authorized')) {
+        router.push('/signin')
+      }
     })
   if (networkError) console.log(`[Network Error] ${networkError}`)
 })

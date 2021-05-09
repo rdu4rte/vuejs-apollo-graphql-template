@@ -35,6 +35,9 @@ export default {
   data: () => ({
     loading: false
   }),
+  components: {
+    Spinner: () => import('@/components/loading/Spinner')
+  },
   props: {
     tasks: {
       type: Array,
@@ -43,7 +46,7 @@ export default {
   },
   methods: {
     async doneEdit(e, id) {
-      console.log(Boolean(e))
+      this.loading = true
       await this.$apollo.mutate({
         mutation: UPDATE_TASK,
         variables: {
@@ -51,6 +54,7 @@ export default {
           done: Boolean(e)
         }
       })
+      this.loading = false
     }
   }
 }

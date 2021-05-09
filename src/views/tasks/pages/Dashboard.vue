@@ -5,7 +5,7 @@
         {{ tab.name }}
       </v-tab>
     </v-tabs>
-    <router-view :tasks="tasks"></router-view>
+    <router-view :tasks="todos"></router-view>
   </v-container>
 </template>
 
@@ -15,7 +15,6 @@ import { GET_TASKS } from '../graphql/tasks'
 export default {
   name: 'Dashboard',
   data: () => ({
-    tasks: [],
     active_tab: null,
     tabs: [
       { index: 1, name: 'Tasks', route: '/dashboard/tasks' },
@@ -23,11 +22,8 @@ export default {
     ]
   }),
   apollo: {
-    getAll: {
-      query: GET_TASKS,
-      variables() {
-        this.tasks = this.getAll
-      }
+    todos: {
+      query: GET_TASKS
     }
   }
 }

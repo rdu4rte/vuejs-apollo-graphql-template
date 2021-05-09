@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     async doneEdit(e, id) {
-      console.log(Boolean(e))
+      this.loading = true
       await this.$apollo.mutate({
         mutation: UPDATE_TASK,
         variables: {
@@ -54,6 +54,7 @@ export default {
           done: Boolean(e)
         }
       })
+      this.loading = false
     },
     edit: function (e, id) {
       console.log(e.target.textContent, id)

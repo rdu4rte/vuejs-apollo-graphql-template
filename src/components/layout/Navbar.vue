@@ -25,6 +25,12 @@
             </v-list-item-icon>
             <v-list-item-title>Sign In</v-list-item-title>
           </v-list-item>
+          <v-list-item v-if="token" @click="logout()">
+            <v-list-item-icon>
+              <v-icon>mdi-account-plus</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -35,7 +41,14 @@ export default {
   name: 'Navbar',
   data: () => ({
     drawer: false,
-    group: null
-  })
+    group: null,
+    token: localStorage.getItem('token')
+  }),
+  methods: {
+    logout() {
+      localStorage.removeItem('token')
+      this.$router.push('/signin')
+    }
+  }
 }
 </script>

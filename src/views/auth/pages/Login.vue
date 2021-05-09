@@ -62,6 +62,7 @@ export default {
             }
           })
           .then((res) => {
+            console.log(res.data.login.token)
             localStorage.setItem('token', res.data.login.token)
             this.$router.push('/dashboard/tasks')
           })

@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { UPDATE_TASK } from '../graphql/tasks'
+import { UPDATE_TASK, GET_TASKS } from '../graphql/tasks'
 
 export default {
   name: 'DoneTasks',
@@ -52,9 +52,12 @@ export default {
         variables: {
           id: id,
           done: Boolean(e)
-        }
+        },
+        refetchQueries: [{ query: GET_TASKS }]
       })
-      this.loading = false
+      setTimeout(() => {
+        this.loading = false
+      }, 500)
     }
   }
 }
